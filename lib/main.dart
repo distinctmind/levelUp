@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:level_up/models/goal.dart';
 
-import './widgets/quest_list.dart';
+import './models/goal.dart';
 import './models/quest.dart';
+import './widgets/quest_list.dart';
+import './widgets/new_quest.dart';
+import './widgets/new_goal.dart';
 
 void main() => runApp(MyApp());
 
@@ -43,6 +45,7 @@ class _MyAppState extends State<MyApp> {
         initialRoute: '/',
         routes: {
           '/AddQuestPage': (context) => AddQuestPage(_addUserQuest),
+          '/AddGoalPage': (context) => AddGoalPage(),
         });
   }
 }
@@ -69,38 +72,5 @@ class MyHomePage extends StatelessWidget {
         child: QuestList(userQuests),
       ),
     );
-  }
-}
-
-class AddQuestPage extends StatelessWidget {
-  
-  final Function addQuest;
-  AddQuestPage(this.addQuest);
-
-  final questNameController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Add Quest'),
-          centerTitle: false,
-        ),
-        body: Column(
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: 'Quest Name'),
-              controller: questNameController,
-            ),
-            RaisedButton(
-              child: Text('Create Quest'),
-              onPressed: () {
-                final quest = Quest(name: questNameController.text, goals: null);
-                addQuest(quest);
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ));
   }
 }

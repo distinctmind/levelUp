@@ -10,8 +10,13 @@ class QuestList extends StatelessWidget {
     return ListView.builder(
       itemCount: userQuests.length,
       itemBuilder: (ctx, index) {
-        return Card(
-          child: Text('${userQuests[index].name}'),
+        return SizedBox(
+          width: double.infinity,
+          height: 90,
+          child: Card(
+            elevation: 2,
+            child: Text('${userQuests[index].name}'),
+          ),
         );
       },
     );
