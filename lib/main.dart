@@ -1,56 +1,50 @@
 import 'package:flutter/material.dart';
 
-import './models/goal.dart';
-import './models/quest.dart';
+import './models/lvl_step.dart';
 import './widgets/task_list.dart';
+import './widgets/day_stats.dart';
 import './widgets/level.dart';
+import './widgets/adventure_list.dart';
+
+import './pages/add_step.dart';
+import './pages/add_adventure.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
-  _MyAppState createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: MyHomePage(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  final List<String> _userTasks = ['Do groceries', 'Go shopping'];
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
-  void _addUserQuest(String task) {
+class _MyHomePageState extends State<MyHomePage> {
+  final List<LevelStep> _userSteps = [];
+  final List<String> _adventureList = [];
+
+  void _updateStep(int index) {
     setState(() {
-      _userTasks.add(task);
+      _userSteps[index].completed = !_userSteps[index].completed;
+    });
+  }
+
+  void _addStep(LevelStep step) {
+    setState(() {
+      _userSteps.add(step);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: MyHomePage(_userTasks),
-      //initialRoute: '/',
-      // routes: {
-      //   '/AddQuestPage': (context) => AddQuestPage(_addUserQuest),
-      //   '/AddGoalPage': (context) => AddGoalPage(),
-      // }
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  final List<String> userTasks;
-  MyHomePage(this.userTasks);
-
-  @override
-  Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: PreferredSize(
-    //     preferredSize: Size.fromHeight(100),
-    //     child: Level(),
-    //   ),
-    //   body: Container(
-    //     child: QuestList(userQuests),
-    //   ),
-    // );
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -66,40 +60,60 @@ class MyHomePage extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             Container(
-              color: Colors.blue,
               child: Column(
                 children: <Widget>[
+                  //Contains the stats for today
+                  DayStats(_userSteps),
+
+                  //This contains the list of tasks that need to be done today.
+                  Expanded(child: TaskList(_userSteps, _updateStep)),
+
                   Container(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text('Aug 28 2019'),
-                                Text('Wednesday')
-                              ]),
-                        ),
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            //color: Colors.red,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[Text('0/0'), Text('0 points')],
-                            ),
-                          ),
-                        ),
-                      ],
+                    width: 300,
+                    margin: EdgeInsets.only(bottom: 40),
+                    child: RaisedButton(
+                      child: Text('Add A Step'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddStep(_addStep),
+                              fullscreenDialog: true,
+                            ));
+                      },
                     ),
                   ),
-                  Expanded(child: TaskList(userTasks))
                 ],
               ),
             ),
+
+            //Second VIEW (QUESTS)
             Container(
-              color: Colors.yellow,
+              child: Column(
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                      alignment: Alignment.bottomLeft,
+                      padding: EdgeInsets.all(20),
+                      child: Text('ADVENTURES', textAlign: TextAlign.start)),
+                  Expanded(child: AdventureList(_adventureList)),
+                  Container(
+                    width: 300,
+                    margin: EdgeInsets.only(bottom: 40),
+                    child: RaisedButton(
+                      child: Text('Add Adventure'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddAdventure(),
+                              fullscreenDialog: true,
+                            ));
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
