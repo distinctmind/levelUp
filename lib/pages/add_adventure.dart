@@ -103,7 +103,7 @@ class _AddAdventureState extends State<AddAdventure> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add A Step'),
+        title: Text('Add Adventure'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20),

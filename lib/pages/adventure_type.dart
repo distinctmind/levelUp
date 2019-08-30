@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import './milestones.dart';
+
+import '../navigation/fade_navigation.dart';
+import './create_habit.dart';
 
 class AdventureType extends StatelessWidget {
-  var adventureType = 0;
   @override
   Widget build(BuildContext context) {
+    var adventureType = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text('Type Of Adventure'),
@@ -48,8 +50,8 @@ class AdventureType extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => adventureType == 0 ? Milestones() : Milestones(),
+                        FadeNavRoute(
+                          builder: (context) => adventureType == 0 ? CreateHabit() : CreateHabit(),
                         ));
                   },
                 )),

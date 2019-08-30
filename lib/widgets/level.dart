@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../models/habit.dart';
+import 'adventures.dart';
+
 class Level extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
+    final List<Habit> adventureList = InheritedAdventures.of(context).adventureService.habits;
+
+    int totalPoints() {
+      int totalPoints = 0;
+      adventureList.forEach((habit){
+        totalPoints += habit.difficulty.toInt();
+      });
+      return totalPoints;
+    }
+
     return Container(
       //height: 100,
       color: Colors.blue,
@@ -42,7 +57,7 @@ class Level extends StatelessWidget {
                   children: <Widget>[
                     Text('Level 0'),
                     //Spacer(),
-                    Text('0 points to go'),
+                    Text('${totalPoints()} points to go'),
                   ],
                 )
               ],
